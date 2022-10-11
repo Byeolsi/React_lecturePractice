@@ -1,17 +1,15 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# reactexam1
-
 # dependencies
-/reactexam1/node_modules
-.pnp
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-/reactexam1/coverage
+/coverage
 
 # production
-/reactexam1/build
+/build
 
 # misc
 .DS_Store
@@ -23,15 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-
-# simplediary
-
-# dependencies
-/simplediary/node_modules
-
-# testing
-/simplediary/coverage
-
-# production
-/simplediary/build
