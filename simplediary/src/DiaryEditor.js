@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef();
   const contentInput = useRef();
 
@@ -31,8 +31,15 @@ const DiaryEditor = () => {
       return;
     }
 
+    onCreate(state.author, state.content, state.emotion);
     console.log(state);
     alert("저장 성공!");
+    // 초기화 작업
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
 
   // className과 컴포넌트의 이름을 일치시켜 좀 더 직관적으로 볼 수 있음.
