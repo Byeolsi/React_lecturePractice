@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef();
@@ -11,9 +11,6 @@ const DiaryEditor = ({ onCreate }) => {
   });
 
   const handleChangeState = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
-
     setState({
       ...state,
       [e.target.name]: e.target.value,
@@ -32,7 +29,6 @@ const DiaryEditor = ({ onCreate }) => {
     }
 
     onCreate(state.author, state.content, state.emotion);
-    console.log(state);
     alert("저장 성공!");
     // 초기화 작업
     setState({
@@ -83,4 +79,4 @@ const DiaryEditor = ({ onCreate }) => {
   );
 };
 
-export default DiaryEditor;
+export default React.memo(DiaryEditor);
