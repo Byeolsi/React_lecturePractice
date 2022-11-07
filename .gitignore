@@ -4,14 +4,24 @@
 
 # dependencies
 /reactexam1/node_modules
-.pnp
+/simplediary/node_modules
+/emotion-diary/node_modules
+
+/reactexam1/.pnp
+/simplediary/.pnp
+/emotion-diary/.pnp
+
 .pnp.js
 
 # testing
 /reactexam1/coverage
+/simplediary/coverage
+/emotion-diary/coverage
 
 # production
 /reactexam1/build
+/simplediary/build
+/emotion-diary/build
 
 # misc
 .DS_Store
@@ -23,15 +33,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-
-# simplediary
-
-# dependencies
-/simplediary/node_modules
-
-# testing
-/simplediary/coverage
-
-# production
-/simplediary/build

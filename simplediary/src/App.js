@@ -1,41 +1,19 @@
-import { useRef, useEffect, useMemo, useCallback, useReducer } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+  useReducer,
+} from "react";
+
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
 import Lifecycle from "./Lifecycle";
 import OptimizeTest from "./OptimizeTest";
 
-// const dummyList = [
-//   {
-//     id: 1,
-//     author: "이정환",
-//     content: "하이 1",
-//     emotion: 5,
-//     // 인자 없이 Date 함수를 호출하면, 현재 시각을 기준으로 날짜 객체가 생성됨.
-//     // 인자 없이 getTime 함수를 호출하면, ms 단위 숫자로 바뀜.
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 2,
-//     author: "홍길동",
-//     content: "하이 2",
-//     emotion: 2,
-//     // 인자 없이 Date 함수를 호출하면, 현재 시각을 기준으로 날짜 객체가 생성됨.
-//     // 인자 없이 getTime 함수를 호출하면, ms 단위 숫자로 바뀜.
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 3,
-//     author: "아무개",
-//     content: "하이 3",
-//     emotion: 1,
-//     // 인자 없이 Date 함수를 호출하면, 현재 시각을 기준으로 날짜 객체가 생성됨.
-//     // 인자 없이 getTime 함수를 호출하면, ms 단위 숫자로 바꿈.
-//     created_date: new Date().getTime(),
-//   },
-// ];
-
-// https://jsonplaceholder.typicode.com/comments
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -65,7 +43,6 @@ const reducer = (state, action) => {
 };
 
 function App() {
-  // const [data, setData] = useState([]);
   const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
@@ -105,18 +82,15 @@ function App() {
   }, []);
 
   const onRemove = useCallback((targetId) => {
-    // const newDiaryList = data.filter((it) => it.id !== targetId);
-    // setData(newDiaryList);
     dispatch({ type: "REMOVE", targetId });
   }, []);
 
   const onEdit = useCallback((targetId, newContent) => {
-    // setData(
-    //   data.map((it) =>
-    //     it.id === targetId ? { ...it, content: newContent } : it
-    //   )
-    // );
     dispatch({ type: "EDIT", targetId, newContent });
+  }, []);
+
+  const memoizedDispatches = useMemo(() => {
+    return { onCreate, onRemove, onEdit };
   }, []);
 
   const getDiaryAnalysis = useMemo(() => {
@@ -132,16 +106,20 @@ function App() {
   // 리스트를 diaryList Prop으로 전달.
   // onCreate()를 Prop으로 전달.
   return (
-    <div className="App">
-      {/* <Lifecycle /> */}
-      {/* <OptimizeTest /> */}
-      <DiaryEditor onCreate={onCreate} />
-      <div>전체 일기 : {data.length}</div>
-      <div>기분 좋은 일기 개수 : {goodCount}</div>
-      <div>기분 나쁜 일기 개수 : {badCount}</div>
-      <div>기분 좋을 일기 비율 : {goodRatio}</div>
-      <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data} />
-    </div>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          {/* <Lifecycle /> */}
+          {/* <OptimizeTest /> */}
+          <DiaryEditor />
+          <div>전체 일기 : {data.length}</div>
+          <div>기분 좋은 일기 개수 : {goodCount}</div>
+          <div>기분 나쁜 일기 개수 : {badCount}</div>
+          <div>기분 좋을 일기 비율 : {goodRatio}</div>
+          <DiaryList />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 }
 
